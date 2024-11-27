@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/mehulbatra/Desktop/Programming/Blazor/OrderFlowApp/obj/Debug/net8.0/scopedcss/projectbundle/OrderFlowApp.bundle.scp.css",
+      "PackagePath": "staticwebassets/OrderFlowApp.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/mehulbatra/Desktop/Programming/Blazor/OrderFlowApp/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/Users/mehulbatra/Desktop/Programming/Blazor/OrderFlowApp/wwwroot/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/mehulbatra/Desktop/Programming/Blazor/OrderFlowApp/wwwroot/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/mehulbatra/Desktop/Programming/Blazor/OrderFlowApp/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.OrderFlowApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.OrderFlowApp.props",
+      "PackagePath": "build\\OrderFlowApp.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.OrderFlowApp.props",
+      "PackagePath": "buildMultiTargeting\\OrderFlowApp.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.OrderFlowApp.props",
+      "PackagePath": "buildTransitive\\OrderFlowApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

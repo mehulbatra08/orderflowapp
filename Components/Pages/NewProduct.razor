@@ -1,0 +1,54 @@
+@page "/addproduct"
+@rendermode InteractiveServer
+@using OrderFlowApp.Models
+@inject ProductService productservice;
+
+<h1 class="text-center my-4">Add New Product</h1>
+
+<div class="container">
+    <form class="p-4 border rounded shadow bg-light">
+        <div class="mb-3">
+            <label for="productName" class="form-label">Name of the Product</label>
+            <input type="text" id="productName" class="form-control" placeholder="Name of the Product" @bind="newProduct.Name">
+        </div>
+        <div class="mb-3">
+            <label for="productDescription" class="form-label">Description</label>
+            <input type="text" id="productDescription" class="form-control" placeholder="Description" @bind="newProduct.Description">
+        </div>
+        <div class="mb-3">
+            <label for="productPrice" class="form-label">Price</label>
+            <input type="text" id="productPrice" class="form-control" placeholder="Price" @bind="newProduct.Price">
+        </div>
+        <button type="submit" @onclick=SubmitProduct class="btn btn-success w-100">Submit</button>
+    </form>
+
+    <h2 class="mt-5">Product List</h2>
+    <ul class="list-group mt-3">
+        @foreach (var product in products)
+        {
+            <li class="list-group-item">
+                <strong>@product.Name</strong><br />
+                <span>@product.Description</span><br />
+                <span>Price: ₹@product.Price</span>
+            </li>
+        }
+    </ul>
+</div>
+
+@code {
+    private Product newProduct = new Product();
+    private List<Product> products = new List<Product>();
+
+    private async Task SubmitProduct()
+    {
+        await productservice.AddProduct(newProduct);
+        newProduct = new Product(); // Reset form
+        products = await productservice.GetAllProductAsync(); // Refresh the product list
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await productservice.GetAllProductAsync();
+    }
+}

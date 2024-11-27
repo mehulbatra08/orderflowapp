@@ -1,0 +1,70 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject OrderService OrderService
+@inject ProductService productservice;
+@using System;
+@using OrderFlowApp.Models
+
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">New Order</h3>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="First Name" @bind="newOrder.FirstName" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Last Name" @bind="newOrder.LastName" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" placeholder="Email" @bind="newOrder.Email" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="tel" class="form-control" placeholder="Phone" @bind="newOrder.Phone" />
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Dropdown for Product -->
+                        <select class="form-select" @bind="newOrder.Product">
+                            <option value="" disabled>Select Product</option>
+                            @foreach (var product in products)
+                            {
+                                <option value="@product.Name">@product.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Address" @bind="newOrder.Address" />
+                    </div>
+                    <div class="col-12">
+                        <textarea class="form-control" placeholder="Additional Information" @bind="newOrder.AdditionalInfo" rows="3"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-end">
+            <button @onclick="SubmitOrder" class="btn btn-primary">Order Now</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private Order newOrder = new Order();
+
+    // List of products for the dropdown
+    private List<Product> products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await productservice.GetAllProductAsync();
+    }
+    private async Task SubmitOrder()
+    {
+        var flag = await OrderService.AddOrder(newOrder);
+        newOrder = new Order(); // Reset form
+        StateHasChanged();
+    }
+}

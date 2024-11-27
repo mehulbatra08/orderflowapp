@@ -1,0 +1,66 @@
+@page "/vieworder/{OrderId:int}"
+@rendermode InteractiveServer
+@inject OrderService orderservice
+@using OrderFlowApp.Models
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 class="card-title">Order Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col">
+                    <h5>First Name:</h5>
+                    <p>@order.FirstName</p>
+                </div>
+                <div class="col">
+                    <h5>Last Name:</h5>
+                    <p>@order.LastName</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <h5>Email:</h5>
+                    <p>@order.Email</p>
+                </div>
+                <div class="col">
+                    <h5>Phone:</h5>
+                    <p>@order.Phone</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <h5>Product:</h5>
+                    <p>@order.Product</p>
+                </div>
+                <div class="col">
+                    <h5>Status:</h5>
+                    <p>@order.Status</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <h5>Address:</h5>
+                    <p>@order.Address</p>
+                </div>
+                <div class="col">
+                    <h5>Additional Info:</h5>
+                    <p>@order.AdditionalInfo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/editorder/@OrderId" class="btn btn-info mt-3">Edit the Order</a>
+
+</div>
+
+@code {
+    [Parameter] public int OrderId { get; set; }
+    private Order order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        order = await orderservice.GetOrderByIdAsync(OrderId);
+    }
+}

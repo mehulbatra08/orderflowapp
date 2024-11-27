@@ -1,0 +1,93 @@
+@page "/admin"
+@rendermode InteractiveServer
+@inject OrderService OrderService
+@inject NavigationManager NavManager
+@using System;
+@using OrderFlowApp.Models
+@using MudBlazor
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<div class="container-fluid bg-light py-4">
+    <div class="container">
+        <MudCard Class="shadow-lg">
+            <MudCardHeader Class="bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Order Management</h4>
+                <span class="badge bg-light text-primary">@orders?.Count Orders</span>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTextField @bind-Value="_searchText" Placeholder="Search orders..."  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mb-3" />
+                
+                <MudTable Items="FilteredOrders" Dense="true" Bordered="true" Hover="true">
+                    <HeaderContent>
+                        <MudTh>ID</MudTh>
+                        <MudTh>First Name</MudTh>
+                        <MudTh>Last Name</MudTh>
+                        <MudTh>Email</MudTh>
+                        <MudTh>Phone</MudTh>
+                        <MudTh>Product</MudTh>
+                        <MudTh>Address</MudTh>
+                        <MudTh>Status</MudTh>
+                        <MudTh>Additional Info</MudTh>
+                        <MudTh>Actions</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="ID">@context.Id</MudTd>
+                        <MudTd DataLabel="First Name">@context.FirstName</MudTd>
+                        <MudTd DataLabel="Last Name">@context.LastName</MudTd>
+                        <MudTd DataLabel="Email">@context.Email</MudTd>
+                        <MudTd DataLabel="Phone">@context.Phone</MudTd>
+                        <MudTd DataLabel="Product">@context.Product</MudTd>
+                        <MudTd DataLabel="Address">@context.Address</MudTd>
+                        <MudTd DataLabel="Status">
+                            <MudBadge Color="@GetStatusBadgeColor(context.Status)" Value="@context.Status" />
+                        </MudTd>
+                        <MudTd DataLabel="Additional Info">@context.AdditionalInfo</MudTd>
+                        <MudTd DataLabel="Actions">
+                            <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="() => NavigateToOrder(context.Id)">View</MudButton>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </MudCardContent>
+        </MudCard>
+        <MudButton Class="mt-3" Color="Color.Primary" Href="/addproduct">Add New Product</MudButton>
+    </div>
+</div>
+
+@code {
+    private List<Order> orders = new List<Order>();
+    private string _searchText = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await OrderService.GetAllOrdersAsync();
+    }
+
+    private IEnumerable<Order> FilteredOrders => string.IsNullOrWhiteSpace(_searchText)
+        ? orders
+        : orders.Where(o => o.FirstName.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
+                            o.LastName.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
+                            o.Email.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
+                            o.Product.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
+                            o.Status.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ||
+                            o.Phone.Contains(_searchText, StringComparison.OrdinalIgnoreCase));
+
+    private Color GetStatusBadgeColor(string status)
+    {
+        return status?.ToLower() switch
+        {
+            "pending" => Color.Warning,
+            "completed" => Color.Success,
+            "cancelled" => Color.Error,
+            _ => Color.Secondary
+        };
+    }
+
+    private void NavigateToOrder(int orderId)
+    {
+        NavManager.NavigateTo($"/vieworder/{orderId}");
+    }
+}

@@ -1,0 +1,65 @@
+@page "/editorder/{OrderId:int}"
+@rendermode InteractiveServer
+@inject OrderService OrderService
+@inject ProductService ProductService
+@using OrderFlowApp.Models
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Edit Order</h3>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="First Name" @bind="newOrder.FirstName" />
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Last Name" @bind="newOrder.LastName" />
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="First Name" @bind="newOrder.Email" />
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="First Name" @bind="newOrder.Phone" />
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="First Name" @bind="newOrder.Address" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-end">
+            <button @onclick="SubmitEditOrder" class="btn btn-primary">Update Order</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int OrderId { get; set; }
+
+    private Order newOrder = new Order();
+    private List<Product> products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetAllProductAsync();
+        newOrder = await OrderService.GetOrderByIdAsync(OrderId);
+    }
+
+    private async Task SubmitEditOrder()
+    {
+        await OrderService.EditOrder(newOrder);
+        Console.WriteLine("Order updated successfully!");
+    }
+}

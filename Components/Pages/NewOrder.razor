@@ -1,0 +1,28 @@
+@page "/order"
+@rendermode InteractiveServer
+@inject OrderService OrderService
+@using OrderFlowApp.Models
+
+<h3>New Order</h3>
+<EditForm Model="@newOrder" OnValidSubmit="SubmitOrder">
+    <DataAnnotationsValidator />
+    <InputText @bind-Value="newOrder.FirstName" Placeholder="First Name" />
+    <InputText @bind-Value="newOrder.LastName" Placeholder="Last Name" />
+    <InputText @bind-Value="newOrder.Email" Placeholder="Email" />
+    <InputText @bind-Value="newOrder.Phone" Placeholder="Phone" />
+    <InputText @bind-Value="newOrder.Product" Placeholder="Product" />
+    <InputTextArea @bind-Value="newOrder.Address" Placeholder="Address" />
+    <button type="submit">Submit</button>
+</EditForm>
+@code {
+    private Order newOrder = new Order();
+    
+    private void SubmitOrder()
+    {   
+        OrderService.AddOrder(newOrder);
+        newOrder = new Order(); // Reset form
+    }
+}
+
+
+
